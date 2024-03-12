@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 
 class OrdersController extends Controller
 {
@@ -14,36 +14,8 @@ class OrdersController extends Controller
      */
     public function index()
     {
-
-        $baseUrl = env('WOOCOMMERCE_STORE_URL');
-        $consumerKey = env('WOOCOMMERCE_CONSUMER_KEY');
-        $consumerSecret = env('WOOCOMMERCE_CONSUMER_SECRET');
-        $page = 1;
-        $perPage = 12;
-
-        try {
-            do {
-                $response = Http::withBasicAuth($consumerKey, $consumerSecret)
-                    ->get("{$baseUrl}/wp-json/wc/v3/orders", [
-                        'page' => $page,
-                        'per_page' => $perPage,
-                        'after' => now()->subDays(30)->toIso8601String(),
-                    ]);
-
-                if ($response->successful()) {
-                    $orders = $response->json();
-                    $page++;
-                } else {
-                    return response()->json(['error' => 'Failed to fetch orders'], $response->status());
-                }
-
-            } while (count($orders) === $perPage);
-
-            return response()->json(['success' => 'Order fetched successfully', 'data' => $orders]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], $e->getCode());
-        }
-
+        $orders=Order::paginate(2);
+        return OrderResource::collection($orders);
     }
 
     /**
