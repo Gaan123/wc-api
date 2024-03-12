@@ -12,7 +12,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('app:fetch-woocomerce-order')->dailyAt('12:00');
+        $schedule->command('model:prune')->daily();
     }
 
     /**
