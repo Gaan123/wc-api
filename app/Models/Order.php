@@ -13,7 +13,7 @@ class Order extends Model
     use HasFactory;
     use Prunable;
 
-    protected $fillable = ['number', 'order_key', 'status', 'date_created', 'total', 'customer_id', 'customer_note',
+    protected $fillable = ['number', 'order_key', 'status',  'total', 'customer_id', 'customer_note',
         'billing', 'shipping','created_at','updated_at'];
     protected $casts = [
         'billing'=>'json', 'shipping'=>'json'
@@ -28,5 +28,18 @@ class Order extends Model
     public function lineItems():HasMany
     {
         return $this->hasMany(LineItem::class);
+    }
+
+    public function scopeStatus($query,$value){
+        $query->where('status',$value);
+    }
+    public function scopeOrderKey($query,$value){
+        $query->where('order_key', 'LIKE', '%' . $value . '%');
+    }
+
+    public function scopeCustomer($query,$value){
+        $value =strtolower($value);
+        $query->whereRaw('LOWER(CONCAT(billing->>"$.first_name", " ", billing->>"$.last_name")) LIKE ?', ["%{$value}%"]);
+
     }
 }
