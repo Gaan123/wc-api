@@ -10,6 +10,7 @@ class LineItem extends Model
     use HasFactory;
     protected $fillable=[
         'name',
+        'id',
         'product_id',
         'variation_id',
         'quantity',

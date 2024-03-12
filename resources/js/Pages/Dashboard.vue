@@ -5,11 +5,8 @@ import {computed, onMounted, Ref, UnwrapRef, watch} from "vue";
 import { ref } from "vue";
 import type { Header, Item,ServerOptions } from "vue3-easy-data-table";
 import axios from "axios";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
 
-const searchField = ref("player");
-const searchValue = ref("Stephen Curry");
+
 const headers: Header[] = [
     { text: "Id", value: "number" },
     { text: "Order No.", value: "order_key"},
@@ -110,8 +107,6 @@ onMounted(function(){
                 </button>
             </div>
         </div>
-
-<!--        <br/>-->
 
 
         <EasyDataTable

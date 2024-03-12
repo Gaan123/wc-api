@@ -18,4 +18,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('orders',[\App\Http\Controllers\Api\OrdersController::class,'index']);
-Route::get('orders',[\App\Http\Controllers\Api\OrdersController::class,'sync']);
+Route::get('orders/sync',[\App\Http\Controllers\Api\OrdersController::class,'sync']);
