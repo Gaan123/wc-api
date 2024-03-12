@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
@@ -22,7 +23,7 @@ class Order extends Model
      */
     public function prunable(): Builder
     {
-        return static::where('updated_at', '<=', now()->subDays(2));
+        return static::where('updated_at', '<=', now()->subDays(30));
     }
     public function lineItems():HasMany
     {
