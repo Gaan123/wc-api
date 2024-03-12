@@ -63,12 +63,7 @@ class FetchWoocomerceOrder extends Command
                                     'customer_id'=>$order['customer_id'],
                                     'customer_note'=>$order['customer_note'],
                                     'billing'=>$order['billing'], 'shipping'=>$order['shipping']
-                                ]);
-//                                $pluckedValues = collect($order['line_items'])
-//                                    ->map(function ($item) {
-//                                        return array_intersect_key($item, array_flip((new LineItem())->getFillable())) ;
-//                                    })
-//                                    ->toArray();
+                                ]);;
                                 $pluckedValues = array_map(function($item) {
 
                                     $lineItem=array_intersect_key($item, array_flip((new LineItem())->getFillable()));
@@ -77,11 +72,9 @@ class FetchWoocomerceOrder extends Command
                                     $lineItem['total_tax']=(float)$lineItem['taxes'];
                                     return $lineItem;
                                 }, $order['line_items']);
-//                                $pluckedValues = collect($order['line_items'])->pluck((new LineItem())->getFillable());
-//                                dd($pluckedValues,collect($order['line_items'])->pluck((new LineItem())->getFillable()),(new LineItem())->getFillable(),$order['line_items']);
                                 $savedOrder->lineItems()->createMany($pluckedValues);
                             }catch (\Exception $exception){
-                                dd($exception->getMessage(),$key);
+                                Log::warning($exception->getMessage());
                             }
 
                         }
