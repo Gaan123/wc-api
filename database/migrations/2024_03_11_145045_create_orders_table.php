@@ -22,6 +22,7 @@ return new class extends Migration
             $table->json('billing');
             $table->json('shipping');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

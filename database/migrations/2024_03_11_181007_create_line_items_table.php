@@ -26,8 +26,9 @@ return new class extends Migration
             $table->json('taxes');
             $table->string('sku')->nullable();
             $table->float('price');
-            $table->foreignIdFor(\App\Models\Order::class);
+            $table->foreignIdFor(\App\Models\Order::class)->constrained('orders')->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
