@@ -105,7 +105,9 @@ onMounted(function(){
                 <input type="text" v-model="filterOptions.customer">
             </div>
             <div class="flex-2 my-auto">
-                <secondary-button class="bg-green-500 text-amber-50 hover:text-green-500 hover:border-y-green-500 focus:outline-none">Sync</secondary-button>
+                <button class="bg-green-500 text-white px-4 py-2 focus:outline-none focus:bg-green-700 active:bg-green-800">
+                    Sync
+                </button>
             </div>
         </div>
 
