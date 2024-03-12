@@ -5,6 +5,8 @@ import {computed, onMounted, Ref, UnwrapRef, watch} from "vue";
 import { ref } from "vue";
 import type { Header, Item,ServerOptions } from "vue3-easy-data-table";
 import axios from "axios";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 const searchField = ref("player");
 const searchValue = ref("Stephen Curry");
@@ -69,7 +71,6 @@ const loadFromServer = async () => {
     const res = await axios.get(restApiUrl.value);
     items.value = res.data.data;
     serverItemsLength.value = res.data.meta.total;
-    // serverItemsLength.value = serverTotalItemsLength;
     loading.value = false;
 };
 onMounted(function(){
@@ -84,25 +85,30 @@ onMounted(function(){
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
         </template>
+        <div class="flex flex-row">
+            <div class="flex-2 mr-1">
+                <span>status:</span>
+                <select v-model="filterOptions.status">
+                    <option value="">select</option>
+                    <option value="pending">pending</option>
+                    <option value="processing">processing</option>
+                    <option value="completed">completed</option>
+                </select>
+            </div>
 
-        <div class="">
-            <span>status:</span>
-            <select v-model="filterOptions.status">
-                <option value="">select</option>
-                <option value="pending">pending</option>
-                <option value="processing">processing</option>
-                <option value="completed">completed</option>
-            </select>
+            <div class="flex-2 mr-1">
+                <span>Order number: </span>
+                <input type="text" v-model="filterOptions.order_key">
+            </div>
+            <div class="flex-2 mr-1">
+                <span>Customer: </span>
+                <input type="text" v-model="filterOptions.customer">
+            </div>
+            <div class="flex-2 my-auto">
+                <secondary-button class="bg-green-500 text-amber-50 hover:text-green-500 hover:border-y-green-500 focus:outline-none">Sync</secondary-button>
+            </div>
         </div>
 
-        <div class="">
-            <span>Order number: </span>
-            <input type="text" v-model="filterOptions.order_key">
-        </div>
-        <div class="">
-            <span>Customer: </span>
-            <input type="text" v-model="filterOptions.customer">
-        </div>
 <!--        <br/>-->
 
 
