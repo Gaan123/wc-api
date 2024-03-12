@@ -23,7 +23,7 @@ class Order extends Model
      */
     public function prunable(): Builder
     {
-        return static::where('updated_at', '<=', now()->subDays(30));
+        return static::where('updated_at', '<=', now()->subMonths(3));
     }
     public function lineItems():HasMany
     {
