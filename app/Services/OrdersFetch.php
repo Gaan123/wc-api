@@ -39,20 +39,21 @@ class OrdersFetch
                                 $existingOrder = Order::where('order_key', $order['order_key'])->first();
 
                                 if ($existingOrder) {
-                                    if ($existingOrder->updated_at->toDateTimeString() !== $order['date_modified']) {
-                                        $savedOrder = $existingOrder->update([
-                                            'number' => $order['number'],
-                                            'status' => $order['status'],
-                                            'total' => $order['total'],
-                                            'customer_note' => $order['customer_note'],
-                                            'billing' => $order['billing'],
-                                            'shipping' => $order['shipping'],
-                                            'customer_id' => $order['customer_id'],
-                                            'updated_at' => $order['date_modified']
-                                        ]);
-                                    }else{
+                                    if ($existingOrder->updated_at->toDateTimeString() === $order['date_modified']) {
                                         continue;
+
                                     }
+                                     $existingOrder->update([
+                                        'number' => $order['number'],
+                                        'status' => $order['status'],
+                                        'total' => $order['total'],
+                                        'customer_note' => $order['customer_note'],
+                                        'billing' => $order['billing'],
+                                        'shipping' => $order['shipping'],
+                                        'customer_id' => $order['customer_id'],
+                                        'updated_at' => $order['date_modified']
+                                    ]);
+                                    $savedOrder =$existingOrder;
                                 } else {
                                     $savedOrder = Order::create([
                                         'order_key' => $order['order_key'],
@@ -75,7 +76,7 @@ class OrdersFetch
                                     if ($lineItemD=LineItem::find($item['id'])){
                                         $lineItemD->update($lineItem);
                                     }else{
-                                        $lineItemD->create([...$lineItem,'order_id'=>$savedOrder->id]);
+                                        LineItem::create([...$lineItem,'order_id'=>$savedOrder->id]);
                                     }
 
                                     return $lineItem;

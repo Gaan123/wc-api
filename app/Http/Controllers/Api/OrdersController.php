@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Services\OrdersFetch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -36,9 +37,14 @@ class OrdersController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function sync()
+    public function sync(OrdersFetch $orderFetch)
     {
-        //
+        try {
+            $orderFetch->handle();
+            return $this->index(request());
+        }catch (\Exception $e) {
+            return response()->json(['message' =>$e->getMessage()],500);
+        }
     }
 
 

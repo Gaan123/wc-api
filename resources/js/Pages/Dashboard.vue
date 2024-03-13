@@ -49,6 +49,14 @@ const restApiUrl = computed(() => {
 
     return url;
 });
+const syncData=async ()=>{
+
+    loading.value = true;
+    const res = await axios.get('/api/orders/sync');
+    items.value = res.data.data;
+    serverItemsLength.value = res.data.meta.total;
+    loading.value = false;
+}
 watch(
     serverOptions,
     (value) => {
@@ -102,7 +110,7 @@ onMounted(function(){
                 <input type="text" v-model="filterOptions.customer">
             </div>
             <div class="flex-2 my-auto">
-                <button class="bg-green-500 text-white px-4 py-2 focus:outline-none focus:bg-green-700 active:bg-green-800">
+                <button @click="syncData" :disabled="loading" class="bg-green-500 text-white px-4 py-2 focus:outline-none focus:bg-green-700 active:bg-green-800">
                     Sync
                 </button>
             </div>

@@ -12,6 +12,7 @@ class LineItem extends Model
         'name',
         'id',
         'product_id',
+        'order_id',
         'variation_id',
         'quantity',
         'tax_class',
