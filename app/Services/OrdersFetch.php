@@ -6,7 +6,6 @@ use App\Models\LineItem;
 use App\Models\Order;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class OrdersFetch
 {
@@ -83,18 +82,16 @@ class OrdersFetch
                                 }, $order['line_items']);
 
                             }catch (\Exception $exception){
-                                Log::warning($exception->getMessage());
-                                dd($exception->getMessage());
+                                throw new \Exception($exception->getMessage());
                             }
 
                         }
                         $page++;
-                    } else {
-                        Log::error($response->status() . "- Failed to fetch orders");
-                        throw new \Exception($response->status() . "- Failed to fetch orders");
+                    }
+                    else {
+                        throw new \Exception($response->body());
                     }
                 } catch (\Exception $e) {
-                    Log::error($e->getMessage());
                     throw new \Exception($e->getMessage());
                 }
             } while ($orders && count($orders) === $perPage);
