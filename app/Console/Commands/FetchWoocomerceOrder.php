@@ -35,7 +35,7 @@ class FetchWoocomerceOrder extends Command
         try {
             $fetch->handle();
         }catch (\Exception $exception){
-            Log::error($exception->getMessage());
+            Log::driver('error_notification')->error($exception->getMessage());
         }
 
     }
